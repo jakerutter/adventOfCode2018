@@ -65,7 +65,7 @@ for(var x=0; x<clothMeasurements.length; x++){
     // console.log(Math.max.apply(Math, heightArray));
     var maxHeight = Math.max.apply(Math, heightArray);
 
-    console.log('finished data prep');
+    //console.log('finished data prep');
     var arrayX = maxFromLeft + maxWidth;
     var arrayY = maxfromTop + maxHeight;
     var grid = createArray(arrayX,arrayY);
@@ -74,7 +74,7 @@ for(var x=0; x<clothMeasurements.length; x++){
        grid[n][k] = 0;
      }
     }
-    console.log('finished creating grid');
+    //console.log('finished creating grid');
 
     populateGrid(grid, distanceFromLeftArray, distanceFromTopArray, widthArray, heightArray);
 
@@ -100,7 +100,7 @@ function populateGrid(grid, distanceFromLeftArray, distanceFromTopArray, widthAr
     }
   index +=1;
   }
-  console.log('finished adding values to grid');
+  //console.log('finished adding values to grid');
   findOverlap(grid);
 }
 
@@ -110,7 +110,7 @@ function findOverlap(grid){
     for(var k=0; k<grid.length; k++){
       if(grid[n][k] > 1){
         inchesOverlapped += 1;
-        console.log('grid location ' + n + ' ' + k + ' has value of '+ grid[n][k]);
+        //console.log('grid location ' + n + ' ' + k + ' has value of '+ grid[n][k]);
       }
     }
   }
