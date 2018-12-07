@@ -88,20 +88,21 @@ function populateGrid(grid, distanceFromLeftArray, distanceFromTopArray, widthAr
   var grid = grid;
   
   while(index < distanceFromLeftArray.length) {
-  let leftDist = distanceFromLeftArray[index];
-  let topDist = distanceFromTopArray[index];
-  let clothWidth = widthArray[index];
-  let clothHeight = heightArray[index];
-
-  for(var j=leftDist; j<leftDist+clothWidth; j++){
-    for(var k=topDist; k<topDist+clothHeight; k++){
-      grid[j][k] +=1;
+    let leftDist = distanceFromLeftArray[index];
+    let topDist = distanceFromTopArray[index];
+    let clothWidth = widthArray[index];
+    let clothHeight = heightArray[index];
+  
+    for(var j=leftDist; j<leftDist+clothWidth; j++){
+      for(var k=topDist; k<topDist+clothHeight; k++){
+        grid[j][k] +=1;
+        }
       }
-    }
-  index +=1;
+    index +=1;
   }
   //console.log('finished adding values to grid');
   findOverlap(grid);
+  findNonOverLapped(grid, distanceFromLeftArray, distanceFromTopArray, widthArray, heightArray);
 }
 
 function findOverlap(grid){
@@ -118,9 +119,6 @@ function findOverlap(grid){
   console.timeEnd('DayThree');
 }
 
-
-
-
  //create the grid
  function createArray(length) {
   var arr = new Array(length || 0), 
@@ -132,4 +130,32 @@ function findOverlap(grid){
   }
 
   return arr;
+}
+
+function findNonOverLapped(grid, distanceFromLeftArray, distanceFromTopArray, widthArray, heightArray) {
+
+  var index = 0;
+  var grid = grid;
+  
+  while(index < distanceFromLeftArray.length) {
+    let leftDist = distanceFromLeftArray[index];
+    let topDist = distanceFromTopArray[index];
+    let clothWidth = widthArray[index];
+    let clothHeight = heightArray[index];
+    var isOverlapped = false;
+    for(var j=leftDist; j<leftDist+clothWidth; j++){
+      for(var k=topDist; k<topDist+clothHeight; k++){
+        if(grid[j][k] >1){
+          isOverlapped = true;
+          }
+        }
+      }
+    if (isOverlapped === false) {
+      //this must be the one that is not overlapped by any of the others
+      document.getElementById('answerTwo').innerText += ' '+ index;
+      return;
+    }
+    index +=1;
+  }
+
 }
