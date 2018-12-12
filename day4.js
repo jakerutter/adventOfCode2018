@@ -35,13 +35,31 @@ function cleanData(){
   shiftArray = getTimeSleptPerShift(dataArray, shiftArray);
   console.log(shiftArray);
 
+  //This block will get answer for part 1
   var sleeper = getGuardWhoSleptMost(shiftArray);
   console.log("the SLEEPER: " + JSON.stringify(sleeper));
-  var commonMin = getMode(sleeper.EachMinuteAsleep);
+  var commonMin = getMode(sleeper.EachMinuteAsleep, false);
   console.log('modeMinute = ' + commonMin);
   var ID = sleeper.GuardID;
-  var answer = commonMin * ID;
-  document.getElementById('answerOne').innerText += " The guard who slept the most was Guard #"+ ID +", and the mode of minutes asleep was "+ commonMin+ " and the answer is: " +answer;
+  var answerOne = commonMin * ID;
+  document.getElementById('answerOne').innerText += " The guard who slept the most was Guard #"+ ID +", and the mode of minutes-asleep was "+ commonMin+ " and the answer is: " +answerOne;
+
+  //This block will get answer for part 2
+  var modePeakCount = 0;
+  var shiftIndex = "";
+  for(var d=0; d<shiftArray.length; d++){
+    var count = getMode(shiftArray[d].EachMinuteAsleep, true);
+    if(count > modePeakCount){
+      modePeakCount = count;
+      shiftIndex = d;
+    }
+  }
+
+  var mostRepetitiveSleeper = shiftArray[shiftIndex];
+  var guardID2 = mostRepetitiveSleeper.GuardID;
+  var commonMin2 = getMode(mostRepetitiveSleeper.EachMinuteAsleep, false);
+  var answerTwo = guardID2 * commonMin2;
+  document.getElementById('answerTwo').innerText += " The guard who slept on same minute the most times was Guard #"+guardID2+". He slept on minute "+commonMin2+" "+modePeakCount+" times. That makes the answer: "+answerTwo;
 }
 
 //create an object with the time stamp as the ID for sorting
@@ -162,23 +180,26 @@ function getGuardWhoSleptMost(shiftArray){
     return shiftArray[0];
 }
 
-function getMode(minutesWorkedArray){
+function getMode(minutesWorkedArray, returnCount){
     if(minutesWorkedArray.length == 0){
         return null;
     }
     var modeMap = {};
     var maxEl = minutesWorkedArray[0], maxCount = 1;
-    for(var i = 0; i<minutesWorkedArray.length; i++){
+    for(var i=0; i<minutesWorkedArray.length; i++){
       var el = minutesWorkedArray[i];
-      if(modeMap[el] == null)
-          modeMap[el] = 1;
-      else
-          modeMap[el]++;  
-      if(modeMap[el] > maxCount)
-      {
+      if(modeMap[el] == null){
+        modeMap[el] = 1;
+      } else {
+         modeMap[el]++;  
+      } if(modeMap[el] > maxCount){
           maxEl = el;
           maxCount = modeMap[el];
       }
+    }
+    //if returnCount is true, return this number
+    if(returnCount){
+      return maxCount;
     }
     return maxEl;
 }
